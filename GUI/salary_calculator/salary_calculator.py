@@ -3,7 +3,7 @@ from PySimpleGUI import PySimpleGUI as sg
 #Layout
 sg.theme('Kayak')
 layout = [
-    [sg.Text('Salário Bruto:'), sg.Input(key='salario_bruto',size=(13,2))],
+    [sg.Text('Salário Bruto:'), sg.Input(key='salario_bruto',size=(14,2))],
     [sg.Text('Benefícios:'), sg.Input(key='beneficios',size=(16,2))],
     [sg.Text('Outros Descontos:'), sg.Input(key='outros_descontos',size=(10,2))],
     [sg.Text('')],# para pular uma linha
@@ -31,5 +31,9 @@ while True:
             beneficios = float(valores["beneficios"])
             salario_liquido += beneficios
             janela['salario_liquido'].update(f'R$ {salario_liquido:.2f}')
-        print('OK')
+        entrada_descontos = valores["outros_descontos"].strip()
+        if entrada_descontos:
+            descontos = float(valores["outros_descontos"])
+            salario_liquido -= descontos
+            janela['salario_liquido'].update(f'R$ {salario_liquido:.2f}')
 janela.close()
