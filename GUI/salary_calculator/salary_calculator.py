@@ -25,15 +25,13 @@ while True:
         entrada = valores["salario_bruto"].strip()
         if entrada:
             salario_liquido = float(valores['salario_bruto'])
-            janela['salario_liquido'].update(f'R$ {salario_liquido:.2f}')
         entrada_beneficios = valores["beneficios"].strip()
         if entrada_beneficios:
             beneficios = float(valores["beneficios"])
             salario_liquido += beneficios
-            janela['salario_liquido'].update(f'R$ {salario_liquido:.2f}')
         entrada_descontos = valores["outros_descontos"].strip()
         if entrada_descontos:
             descontos = float(valores["outros_descontos"])
             salario_liquido -= descontos
-            janela['salario_liquido'].update(f'R$ {salario_liquido:.2f}')
+    janela['salario_liquido'].update(f'R$ {salario_liquido:.2f}')
 janela.close()
