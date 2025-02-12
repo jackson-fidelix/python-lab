@@ -2,7 +2,7 @@
 from PySimpleGUI import PySimpleGUI as sg
 import sys
 # colocar caminho correto, de acordo com seu repositório
-sys.path.append(r'C:\Users\smcti\Documents\ex')
+sys.path.append(r'e:\MeusProjetos\python-lab')
 from lib.impostos import *
 
 #Layout
