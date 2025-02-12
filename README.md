@@ -13,7 +13,9 @@ Este repositório contém diversos projetos e experimentos desenvolvidos em **Py
 
 
 ## 📌 Exemplos de Projetos  
-### 🔹 **Salary Calculator (GUI)**  
+### 🔹 **Salary Calculator (GUI) Version 1.0**  
+![image](https://github.com/user-attachments/assets/bf7f2709-d83b-4ba8-b798-7283d247a55c)
+
 Um aplicativo simples feito com **PySimpleGUI** para calcular o salário líquido com base em descontos e impostos.  
 
 📍 **Local:** `GUI/salary_calculator/`  
