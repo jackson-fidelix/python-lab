@@ -42,10 +42,11 @@ while True:
             descontos = float(valores["outros_descontos"])
         else:
             descontos = 0.0
-    inss = cacular_inss(salario)
+    inss = calcular_inss(salario)
     irrf = calcular_irrf(salario)
+    deducao = calcular_deducao(irrf)
     janela['percentual_inss'].update(f' {inss*100:.2f}%')
     janela['percentual_irrf'].update(f' {irrf*100:.2f}%')
-    salario_liquido = calcular_salario(salario, inss, irrf, beneficios, descontos)
+    salario_liquido = calcular_salario(salario, inss, irrf,deducao, beneficios, descontos)
     janela['salario_liquido'].update(f'R$ {salario_liquido:.2f}')
 janela.close()

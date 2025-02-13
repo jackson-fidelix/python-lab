@@ -1,4 +1,4 @@
-def cacular_inss(salario = float):
+def calcular_inss(salario = float):
     if 0 < salario <= 1518.00:
         inss = 0.075
     elif  1518.00 < salario <= 2793.88:
@@ -26,10 +26,25 @@ def calcular_irrf(salario = float):
     return irrf
 
 
-def calcular_salario(salario, inss, irrf , beneficios, descontos):
-    imposto_inss = salario * inss 
-    imposto_irrf = salario * irrf
-    novo_salario = (salario - (imposto_inss + imposto_irrf)) + beneficios - descontos
-    return novo_salario
+def calcular_salario(salario, inss, irrf, deducao, beneficios, descontos):
+    imposto_inss = salario * inss
+    base_sem_inss = salario - imposto_inss
+    imposto_irrf = base_sem_inss * irrf - deducao
+    salario_liquido = (salario - (imposto_inss + imposto_irrf)) + beneficios - descontos
+    return salario_liquido
+
+def calcular_deducao(irrf):
+    if irrf == 0:
+        deduzir = 0
+    elif irrf == 0.075:
+        deduzir = 158.40
+    elif irrf == 0.15:
+        deduzir = 370.40
+    elif irrf == 0.225:
+        deduzir = 651.73
+    else:
+        deduzir = 884.96
+    return deduzir
+
 
     
