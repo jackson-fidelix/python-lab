@@ -26,13 +26,6 @@ def calcular_irrf(salario = float):
     return irrf
 
 
-def calcular_salario(salario, inss, irrf, deducao, beneficios, descontos):
-    imposto_inss = salario * inss
-    base_sem_inss = salario - imposto_inss
-    imposto_irrf = base_sem_inss * irrf - deducao
-    salario_liquido = (salario - (imposto_inss + imposto_irrf)) + beneficios - descontos
-    return salario_liquido
-
 def calcular_deducao(irrf):
     if irrf == 0:
         deduzir = 0
@@ -47,4 +40,10 @@ def calcular_deducao(irrf):
     return deduzir
 
 
-    
+def calcular_salario(salario, inss, irrf, deducao, beneficios, descontos):
+    imposto_inss = salario * inss
+    base_sem_inss = salario - imposto_inss
+    imposto_irrf = base_sem_inss * irrf - deducao
+    salario_liquido = (salario - (imposto_inss + imposto_irrf)) + beneficios - descontos
+    return salario_liquido
+   
