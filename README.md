@@ -5,7 +5,8 @@ Este repositório contém diversos projetos e experimentos desenvolvidos em **Py
 ## 📂 Estrutura  
 - **GUI/** → Projetos com interface gráfica (PySimpleGUI, Tkinter, PyQt).  
 - **DataProcessing/** → Automação e manipulação de dados (Excel, CSV, Pandas).  
-- **Scripts/** → Pequenos utilitários para tarefas diversas.  
+- **Scripts/** → Pequenos utilitários para tarefas diversas.
+- **Games/** → Educacionais para ensinar algoritmo e lógica de promgramação.   
 
 ## 🛠 Tecnologias  
 - Python 3
