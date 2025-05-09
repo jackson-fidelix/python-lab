@@ -12,7 +12,7 @@ sound_on = True
 
 
 # actors
-lion = Actor("lion_idle1", (100, 500))
+hero = Actor("hero_idle1", (100, 500))
 enemies = [
     Actor("enemy1", (600, 500)),
     Actor("enemy2", (300, 500)),
@@ -21,10 +21,10 @@ enemies = [
 platform = Actor("platform", (400, 500))
 
 # animations
-lion_idle_frames = ["lion_idle1", "lion_idle2"]
-lion_walk_frames = ["lion_walk1", "lion_walk2"]
-lion_frame_index = 0
-lion_anim_timer = 0
+hero_idle_frames = ["hero_idle1", "hero_idle2"]
+hero_walk_frames = ["hero_walk1", "hero_walk2"]
+hero_frame_index = 0
+hero_anim_timer = 0
 
 # menu buttons (x,y, width and height)
 buttons = {
@@ -58,7 +58,76 @@ def draw_menu():
     screen.draw.text(text, center=buttons["sound"].center, fontsize=30, color="white")
 
     #draw exit button
-    screen.draw.filled_rect(buttons["exit"], "darked")
+    screen.draw.filled_rect(buttons["exit"], "darkred")
     screen.draw.text("Exit", center=buttons["exit"].center, fontsize=30, color="white")
 
 # function to draw the game screen
+def draw_game():
+    screen.fill((100, 180, 225))
+    platform.draw()
+    hero.draw()
+    for enemy in enemies:
+        enemy.draw()
+
+
+    # if game paused, show "PAUSED"
+    if paused:
+        screen.draw.text("PAUSED", center=(WIDTH//2, HEIGHT//2), fontsize=60, color="yellow")
+
+
+# when the mouse clicked
+def on_mouse_down(pos):
+    global game_started, sound_on
+    if not game_started:
+        if buttons["start"].collidepoint(pos):
+            start_game()
+        elif buttons["sound"].collidepoint(pos):
+            toggle_sound()
+        elif buttons["exit"].collidepoint(pos):
+            exit()
+
+
+# update of the game
+def update():
+    if game_started and not paused:
+        animate_hero()
+
+
+# start game
+def start_game():
+    global game_started
+    game_started = True
+    if sound_on:
+        music.play("music")
+
+
+# turn on/turn off the sound
+def toggle_sound():
+    global sound_on
+    sound_on = not sound_on
+    if not sound_on:
+        music.stop()
+    else:
+        if game_started:
+            music.play("music")
+
+
+# detect pressed keys
+def on_keys_down(key):
+    global paused
+    if key == keys.P:
+        paused = not paused
+
+
+# hero animation
+def animate_hero():
+    global hero_frame_index, hero_anim_timer
+    hero_anim_timer += 1
+    if hero_anim_timer >= 20:
+        hero_frame_index = (hero_frame_index + 1) % len(hero_idle_frames)
+        hero.image = hero_idle_frames[hero_frame_index] # switch of the sprite
+        hero_anim_timer = 0
+
+
+# start game loop
+pgzrun.go()
