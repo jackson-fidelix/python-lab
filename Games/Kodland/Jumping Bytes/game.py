@@ -92,7 +92,7 @@ def draw_menu():
     screen.draw.text(text, center=buttons["sound"].center, fontsize=30, color="white")
     screen.draw.filled_rect(buttons["exit"], "darkred")
     screen.draw.text("Exit", center=buttons["exit"].center, fontsize=30, color="white")
-    screen.draw.text("Type P for everytime for 'pause' the game", center=(WIDTH//2, 450), fontsize=30, color="black")
+    screen.draw.text("Tecle P a qualquer momento para PAUSAR o jogo!", center=(WIDTH//2, 450), fontsize=30, color="black")
     
 
 def draw_game():
