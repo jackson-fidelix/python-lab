@@ -12,17 +12,16 @@ sound_on = True
 
 
 # actors
-hero = Actor("hero_idle1", (100, 500))
+hero = Actor("hero/hero_idle1", (100, 500))
 enemies = [
-    Actor("enemy1", (600, 500)),
-    Actor("enemy2", (300, 500)),
-    Actor("enemy3", (700, 450))
+    Actor("enemy/fire_idle1", (600, 500)),
+    Actor("enemy/skeleton_idle1", (300, 500))
 ]    
-platform = Actor("platform", (400, 500))
+platform = Actor("accessories/platform", (400, 500))
 
 # animations
-hero_idle_frames = ["hero_idle1", "hero_idle2"]
-hero_walk_frames = ["hero_walk1", "hero_walk2"]
+hero_idle_frames = ["hero_idle1", "hero_idle2", "hero_idle3"]
+hero_walk_frames = ["hero_walk1", "hero_walk2", "hero_walk3"]
 hero_frame_index = 0
 hero_anim_timer = 0
 
@@ -98,7 +97,7 @@ def start_game():
     global game_started
     game_started = True
     if sound_on:
-        music.play("music")
+        music.play("start")
 
 
 # turn on/turn off the sound
@@ -125,7 +124,7 @@ def animate_hero():
     hero_anim_timer += 1
     if hero_anim_timer >= 20:
         hero_frame_index = (hero_frame_index + 1) % len(hero_idle_frames)
-        hero.image = hero_idle_frames[hero_frame_index] # switch of the sprite
+        hero.images = hero_idle_frames[hero_frame_index] # switch of the sprite
         hero_anim_timer = 0
 
 
