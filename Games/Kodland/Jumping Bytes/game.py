@@ -19,6 +19,7 @@ hero = Actor("hero/hero_idle1", (100, 500), anchor=('center', 'bottom'))
 enemies = [
     Actor("enemy/skeleton_idle1", (300, 550), anchor=('center', 'bottom'))
 ]
+INITIAL_ENEMIES = enemies.copy()
 for enemy in enemies:
     enemy.frame_index = 0
     enemy.anim_timer = 0
@@ -132,18 +133,26 @@ def update():
 
 
 def start_game():
-    global game_started, game_over, game_won, hero, enemies
+    global game_started, game_over, game_won, hero, enemies, INITIAL_ENEMIES
+    
     game_started = True
     game_over = False
     game_won = False
+    
+    # Agora a variável está reconhecida globalmente
+    enemies = INITIAL_ENEMIES.copy() 
+    
     hero.pos = (100, 500)
     hero.vx = 0
     hero.vy = 0
     hero.on_ground = True
+
     for enemy in enemies:
-        enemy.x = enemy.initial_x
+        enemy.x = enemy.initial_x  
+
     if sound_on:
         music.play("start")
+
 
 
 def toggle_sound():
