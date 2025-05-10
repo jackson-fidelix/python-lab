@@ -11,11 +11,12 @@ game_started = False
 paused = False
 sound_on = True
 game_over = False
+game_won = False
+
 
 # Actors
 hero = Actor("hero/hero_idle1", (100, 500), anchor=('center', 'bottom'))
 enemies = [
-    Actor("enemy/fire_idle1", (600, 550), anchor=('center', 'bottom')),
     Actor("enemy/skeleton_idle1", (300, 550), anchor=('center', 'bottom'))
 ]
 for enemy in enemies:
@@ -37,8 +38,7 @@ gravity = 1
 jump_strength = -18
 move_speed = 5
 
-fire_idle_frames = ["fire_idle1", "fire_idle2", "fire_idle3"]
-fire_walk_frames = ["fire_walk1", "fire_walk2"]
+
 skeleton_idle_frames = ["skeleton_idle1", "skeleton_idle2", "skeleton_idle3"]
 skeleton_walk_frames = ["skeleton_walk1", "skeleton_walk2"]
 
@@ -51,7 +51,7 @@ def update_enemies():
         enemy.anim_timer += 1
         if enemy.anim_timer >= 25:
             if enemy == enemies[0]:
-                frames = fire_walk_frames if enemy.vx != 0 else fire_idle_frames
+                frames = skeleton_walk_frames if enemy.vx != 0 else skeleton_idle_frames
             else:
                 frames = skeleton_walk_frames if enemy.vx != 0 else skeleton_idle_frames
             enemy.frame_index = (enemy.frame_index + 1) % len(frames)
@@ -91,13 +91,19 @@ def draw_menu():
     screen.draw.text(text, center=buttons["sound"].center, fontsize=30, color="white")
     screen.draw.filled_rect(buttons["exit"], "darkred")
     screen.draw.text("Exit", center=buttons["exit"].center, fontsize=30, color="white")
+    screen.draw.text("Type P for everytime for 'pause' the game", center=(WIDTH//2, 450), fontsize=30, color="black")
+    
 
 def draw_game():
     if paused:
         screen.draw.text("PAUSED", center=(WIDTH//2, HEIGHT//2), fontsize=60, color="yellow")
-    if game_over:
+    elif game_over:
         screen.draw.text("GAME OVER", center=(WIDTH//2, HEIGHT//2), fontsize=60, color="red")
         screen.draw.text("Pressione Enter para voltar ao menu", center=(WIDTH//2, HEIGHT//2 + 50), fontsize=30, color="white")
+    elif game_won:
+        screen.draw.text("🎉 PARABÉNS! VOCÊ VENCEU! 🎉", center=(WIDTH//2, HEIGHT//2), fontsize=50, color="green")
+        screen.draw.text("Pressione Enter para jogar novamente", center=(WIDTH//2, HEIGHT//2 + 50), fontsize=30, color="white")
+
 
 def on_mouse_down(pos):
     global game_started, sound_on
@@ -110,9 +116,10 @@ def on_mouse_down(pos):
             exit()
 
 def update():
-    global game_started, game_over
+    global game_won, game_started, game_over
+
     if game_started and not paused:
-        if not game_over:
+        if not game_over and not game_won:
             check_ground()
             animate_hero()
             handle_input()
@@ -120,10 +127,15 @@ def update():
             check_enemies()
             update_enemies()
 
+        if hero.right >= WIDTH:
+            game_won = True
+
+
 def start_game():
-    global game_started, game_over, hero, enemies
+    global game_started, game_over, game_won, hero, enemies
     game_started = True
     game_over = False
+    game_won = False
     hero.pos = (100, 500)
     hero.vx = 0
     hero.vy = 0
@@ -132,6 +144,7 @@ def start_game():
         enemy.x = enemy.initial_x
     if sound_on:
         music.play("start")
+
 
 def toggle_sound():
     global sound_on
@@ -171,36 +184,30 @@ def check_ground():
     else:
         hero.on_ground = False
 
+
 def check_enemies():
     global game_over
-    enemies_to_remove = []  # Lista para armazenar inimigos que devem ser removidos
 
-    for enemy in enemies:
-        # Reduzindo hitbox para ~50% do tamanho original, centralizado
-        ew, eh = enemy.width // 1.8, enemy.height // 8
-        ex = enemy.x - ew // 8
-        ey = enemy.y - eh
-        enemy_hitbox = Rect((ex, ey), (ew, eh))
+    enemies_to_remove = []
+    for enemy in enemies[:]:
+        hero_rect = hero._rect
+        enemy_rect = enemy._rect
 
-        # Reduzindo a hitbox do herói
-        hw, hh = hero.width * 0.6, hero.height * 0.9
-        hx = hero.x - hw // 2
-        hy = hero.y - hh
-        hero_hitbox = Rect((hx, hy), (hw, hh))
+        print(f"Hero: {hero_rect}")
+        print(f"Enemy: {enemy_rect}")
 
-        if hero_hitbox.colliderect(enemy_hitbox):
-            if hero.vy > 0 and hero.bottom <= enemy.top + 10:
-                # O herói saltou sobre o inimigo
-                enemies_to_remove.append(enemy)  # Adiciona à lista de inimigos a serem removidos
-                hero.vy = jump_strength // 2  # Ajusta o pulo do herói
+        if hero.vy > 0 and hero_rect.bottom <= enemy_rect.top:
+            if hero.vy > 0 and hero._rect.bottom - 10 <= enemy._rect.top:
+                enemies_to_remove.append(enemy)
+                hero.vy = -12 
             else:
                 game_over = True
-                return
-
-    # Remover os inimigos que estão na lista
+        elif abs(hero.x - enemy.x) <= 20 and abs(hero.y - enemy.y) <= 15:  
+            print("⚠️ O herói está muito próximo do inimigo! GAME OVER!")
+            game_over = True
     for enemy in enemies_to_remove:
-        enemies.remove(enemy)
-
+        if enemy in enemies:  
+            enemies.remove(enemy)
 
 def animate_hero():
     global hero_frame_index, hero_anim_timer
@@ -223,6 +230,13 @@ def on_key_down(key):
     if key == keys.P:
         paused = not paused
     elif key == keys.RETURN and game_over:
+        start_game()
+def on_key_down(key):
+    global paused, game_won
+
+    if key == keys.P:
+        paused = not paused
+    elif key == keys.RETURN and (game_over or game_won):
         start_game()
 
 pgzrun.go()
