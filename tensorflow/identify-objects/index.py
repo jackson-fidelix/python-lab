@@ -4,7 +4,7 @@ import numpy as np
 from tensorflow.keras.applications.mobilenet_v2 import MobileNetV2, preprocess_input, decode_predictions
 
 
-img_file_buffer = st.camera_input("Tirar foto")
+img_file_buffer = st.camera_input("Don't forget take a photo")
 
 if img_file_buffer is not None:
     bytes_data = img_file_buffer.getvalue()
@@ -21,7 +21,9 @@ if img_file_buffer is not None:
 
     decoded_predictions = decode_predictions(predictions, top=1)[0]
 
-    dominant_object = decode_predictions[0][1]
+    dominant_object = decoded_predictions[0][1]
     score_object = decoded_predictions[0][2]
 
     st.write(f"Dominant Object: {dominant_object} - {score_object * 100:.2f}%") # retorno
+
+# command to execute project ".\.venv\Scripts\streamlit.exe run tensorflow\identify-objects\index.py"
