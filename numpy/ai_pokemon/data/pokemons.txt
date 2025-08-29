@@ -1,0 +1,57 @@
+Nome: Charmander
+Tipo: Fogo
+Habilidades: Chama, Poder Solar
+Descrição: Charmander é um Pokémon inicial da região de Kanto. Seu rabo sempre tem uma chama acesa, que representa sua vitalidade.
+
+
+Nome: Squirtle
+Tipo: Água
+Habilidades: Torrente, Casco Reforçado
+Descrição: Squirtle é um Pokémon tartaruga aquática que dispara água pelo casco e é conhecido por sua defesa sólida.
+
+Nome: Bulbasaur
+Tipo: Grama, Veneno
+Habilidades: Espessura, Clorofila
+Descrição: Bulbasaur carrega uma semente em suas costas que cresce conforme ele evolui. É um Pokémon inicial da região de Kanto.
+
+Nome: Pikachu
+Tipo: Elétrico
+Habilidades: Estática, Pararraios
+Descrição: Pikachu é um Pokémon rato elétrico famoso por suas bochechas que soltam faíscas. É o mascote da franquia Pokémon.
+
+
+Nome: Jigglypuff
+Tipo: Normal, Fada
+Habilidades: Canto, Competitivo
+Descrição: Jigglypuff encanta inimigos com sua canção e os faz dormir. É conhecido por seu corpo redondo e fofinho.
+
+
+Nome: Eevee
+Tipo: Normal
+Habilidades: Fuga, Adaptabilidade, Antecipação
+Descrição: Eevee possui um DNA instável que permite diversas evoluções diferentes, dependendo das condições.
+
+
+Nome: Snorlax
+Tipo: Normal
+Habilidades: Imunidade, Gula
+Descrição: Snorlax é um Pokémon gigante que passa a maior parte do tempo dormindo. Só se move quando tem comida por perto.
+
+
+Nome: Gengar
+Tipo: Fantasma, Veneno
+Habilidades: Corpo Amaldiçoado
+Descrição: Gengar é um Pokémon sombrio que adora assustar pessoas. Ele se esconde nas sombras e pode absorver calor ao redor.
+
+
+Nome: Onix
+Tipo: Pedra, Terra
+Habilidades: Cabeça de Pedra, Força Bruta
+Descrição: Onix é uma enorme serpente de pedra que vive em cavernas. É conhecido por sua força física e resistência.
+
+
+Nome: Magikarp
+Tipo: Água
+Habilidades: Nado Veloz
+Descrição: Magikarp é um Pokémon fraco e quase inútil em batalha, mas pode evoluir para o poderoso Gyarados.
+
