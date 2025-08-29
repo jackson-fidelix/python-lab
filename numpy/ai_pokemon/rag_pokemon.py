@@ -4,7 +4,7 @@ from time import sleep
 from sentence_transformers import SentenceTransformer
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
 
-Data_Directory = "data"
+Data_Directory = "ai_pokemon/data"
 
 def load_documents():
     docs = [] 
