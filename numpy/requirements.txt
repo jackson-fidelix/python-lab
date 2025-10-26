@@ -28,3 +28,4 @@ tqdm==4.67.1
 transformers==4.55.4        
 typing_extensions==4.15.0   
 urllib3==2.5.0
+django==4.2.16
