@@ -1,0 +1,116 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {height: 100%;}
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2vh;
+}
+
+.chat-container {
+    width: 100%;
+    max-width: 90vw;
+    height: 96vh;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-header {
+    background: white;
+    color: white;
+    padding: 4vh 5vw;
+    text-align: center;
+    font-size: 5.5vw;
+    font-weight: bold;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 3vh 4vw;
+    overflow-y: auto;
+    background: #f8f9fa;
+}
+
+.message {
+    margin: 2vh 0;
+    padding: 2.5vh 4vw;
+    border-radius: 20px;
+    max-width: 80%;
+    line-height: 1.5;
+    font-size: 4.2vw;
+    word-wrap: break-word;
+}
+
+.user {
+    background: #007bff;
+    color: white;
+    margin-left: auto;
+    border-bottom-right-radius: 4px;
+}
+
+.bot {
+    background: #e9ecef;
+    color: #333;
+    margin-right: auto;
+    border-bottom-left-radius: 4px;
+}
+
+.thinking {
+    color: #665;
+    font-style: italic;
+    font-size: 4vw;
+}
+
+.thinking::after {
+    content: '...';
+    animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+    0%, 20% { content: '.'; }
+    40% { content: '..'; }
+    60%, 100% { content: '...'; }
+}
+
+.input-area {
+    display: flex;
+    padding: 2vh 3vw;
+    background: white;
+    border-top: 1px solid #eee;
+    gap: 2vw;
+}
+
+#message-input {
+    flex: 1;
+    padding: 3vh 4vw;
+    border: 2px solid #ddd;
+    border-radius: 30px;
+    font-size: 4.2vw;
+    outline: none;
+    transition: border 0.3s;
+}
+
+#message-input:focus { border-color: #007bff; }
+
+button {
+    padding: 3vh 6vw;
+    background: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 4.2vw;
+    white-space: nowrap;
+}
+
+button:hover { background: #cc0000; }
+
+/* Scrollbar bonitinha */
+.chat-messages::-webkit-scrollbar { width: 8px; }
+.chat-messages::-webkit-scrollbar-track { background: transparent; }
+.chat-messages::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }

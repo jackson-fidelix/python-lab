@@ -1,4 +1,3 @@
-# Cópia do RAG, ajustada apara django
 import os
 import numpy as np
 from time import sleep
@@ -265,3 +264,54 @@ def main():
 
 if __name__ == "__main__":
     main()
+# ===============================================
+# FUNÇÃO PARA O SITE (DJANGO)
+# ===============================================
+def process_query(question):
+    docs, types, skills, names, char_list = load_documents()
+    embedder = build_embedder()
+    doc_embeddings = embed_texts(docs, embedder)
+    generator = build_generator()
+    tokenizer = generator.tokenizer
+
+    context = retrieve_context(question, docs, doc_embeddings, embedder, types, skills, names, char_list, top_k=5)
+    if not context:
+        return "Não encontrei informações sobre isso "
+
+    prompt = format_prompt(context, question, tokenizer, max_tokens=400)
+    outputs = generator(prompt, max_new_tokens=50, do_sample=False, num_beams=12, num_return_sequences=1)
+    answer = outputs[0]["generated_text"].strip()
+
+    # Pós-processamento simplificado e robusto (mantém seu filtro de qualidade)
+    query_lower = question.lower()
+    found_names = []
+    found_skills = []
+    found_types = []
+
+    # Se o modelo respondeu besteira, força extrair do contexto
+    if any(palavra in answer.lower() for palavra in ["não sei", "resposta:", "contexto:", "pergunta:", "qual pokémon"]):
+        for doc in context.split("\n\n"):
+            lines = doc.lower().split("\n")
+            nome_line = next((l for l in lines if l.startswith("nome:")), "")
+            if any(term in query_lower for term in query_lower.split() if term in doc.lower()):
+                if nome_line:
+                    found_names.append(nome_line.split(":", 1)[1].strip().split(",")[0])
+                # Extrai habilidades ou tipo se for a pergunta
+                if "habilidade" in query_lower:
+                    hab_line = next((l for l in lines if l.startswith("habilidades:")), "")
+                    if hab_line:
+                        found_skills.extend([s.strip() for s in hab_line.split(":", 1)[1].split(",")])
+                if "tipo" in query_lower:
+                    tipo_line = next((l for l in lines if l.startswith("tipo:")), "")
+                    if tipo_line:
+                        found_types.extend([t.strip() for t in tipo_line.split(":", 1)[1].split(",")])
+
+    if found_skills:
+        return ", ".join(found_skills) + " "
+    elif found_names:
+        return found_names[0] + " "
+    elif found_types:
+        return ", ".join(found_types) + " "
+    else:
+        # Resposta limpa do modelo se estiver boa
+        return answer.split("Resposta:")[-1].strip() + " "

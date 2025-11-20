@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Chat</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+</head>
+<body>
+    {% csrf_token %}
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>Pokémon Chat</h1>
+        </div>
+        <div class="chat-messages" id="chat-messages"></div>
+
+        <div class="input-area">
+            <input type="text" id="message-input" placeholder="Pergunte sobre o Pokémon..." autocomplete="off">
+            <button onclick="sendMessage()">Enviar</button>
+        </div>
+    </div>
+    
+    <script src="/static/js/chat.js"></script>
+</body>
+</html>
