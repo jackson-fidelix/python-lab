@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 
+
 # definindo diretório base do projeto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
