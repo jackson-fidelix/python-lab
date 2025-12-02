@@ -4,7 +4,7 @@ import re
 from sentence_transformers import SentenceTransformer
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
 
-# Caminho correto para a pasta data (funciona no Django)
+# Caminho correto para a pasta data
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 Data_Directory = os.path.join(BASE_DIR, "ai_pokemon", "data")
 
@@ -40,8 +40,14 @@ def load_documents():
                         elif l.startswith("descrição:"):
                             desc = line.split(":", 1)[1].strip()
                             desc = re.sub(r'[.,;!?]', '', desc)
-                            words = [w.lower() for w in desc.split() if w.lower() not in {"é","um","que","por","sua","seu","com","em","para","de","a","o"}]
-                            keywords = [w for w in words if len(w) > 3 and w not in {"pokémon", "conhecido"}]
+                            words = [w.lower() for w in desc.split() if w.lower() not in {"é", "um", "que", "por", "sua", "seu", "com", "em", "para", "de", "a", "o", "do", "da", "e", "os", "as"}]
+                            keywords = [w for w in words if len(w) > 3 and w not in {"pokémon", "conhecido", "muito", "pode", "sempre", "quando", "tem"}]
+    
+                            if any(palavra in desc.lower() for palavra in ["fofinho", "redondo", "encanta", "canção", "dormir"]):
+                                keywords.append("fofinho")
+                                keywords.append("jigglypuff_fofo")
+                                keywords.append("adorável")
+                                
                             all_characteristics.update(keywords)
 
     return docs, list(all_types), list(all_skills), list(all_names), list(all_characteristics)
@@ -58,33 +64,44 @@ def cosine_similarity(a, b):
     return 0.0 if na == 0 or nb == 0 else dot / (na * nb)
 
 def retrieve_context(query, docs, doc_embeddings, embedder, types, skills, names, char_list, top_k=5):
-    query_emb = embedder.encode([query])[0]
+    query_emb = embedder.encode([query], convert_to_numpy=True)[0]
     query_lower = query.lower()
 
+    # Palavras da pergunta que são tipo, habilidade, nome ou característica
+    query_types = [t for t in types if t in query_lower]
+    query_skills = [s for s in skills if s in query_lower]
+    query_names = [n for n in names if n in query_lower]
+    query_chars = [c for c in char_list if c in query_lower]
+
     scores = []
-    for i, emb in enumerate(doc_embeddings):
+    for idx, emb in enumerate(doc_embeddings):
         score = cosine_similarity(query_emb, emb)
-        doc_lower = docs[i].lower()
-        bonus = 0.5 * sum(1 for t in query_lower.split() if t in doc_lower)
+        doc_lower = docs[idx].lower()
 
-        if "habilidade" in query_lower and any(skill in doc_lower for skill in skills if skill in query_lower):
-            bonus += 6.0
-        if "tipo" in query_lower and any(t in doc_lower for t in types if t in query_lower):
-            bonus += 6.0
-        if any(n in query_lower for n in names if n in doc_lower):
-            bonus += 6.0
-        if any(c in query_lower for c in char_list if c in doc_lower):
-            bonus += 10.0
+        bonus = 0.5 * sum(1 for term in query_lower.split() if term in doc_lower)
 
-        scores.append((i, score + bonus))
+        if "habilidade" in query_lower and any(s in doc_lower for s in query_skills):
+            bonus += 6.0
+        if "tipo" in query_lower and any(t in doc_lower for t in query_types):
+            bonus += 6.0
+        if any(n in doc_lower for n in query_names):
+            bonus += 6.0
+        if query_chars:  # só dá bonus se a pergunta tiver característica
+            bonus += 10.0 * sum(1 for c in query_chars if c in doc_lower)
+
+        scores.append((idx, score + bonus))
 
     scores.sort(key=lambda x: x[1], reverse=True)
-    top_indices = [i for i, _ in scores[:top_k]]
+    top_indices = [idx for idx, _ in scores[:top_k]]
 
     selected = []
-    for i in top_indices:
-        doc = docs[i]
-        if any(term in doc.lower() for term in query_lower.split() if len(term) > 2):
+    for idx in top_indices:
+        doc = docs[idx]
+        doc_lower = doc.lower()
+        if (any(n in doc_lower for n in query_names) or
+            any(t in doc_lower for t in query_types) or
+            any(s in doc_lower for s in query_skills) or
+            any(c in doc_lower for c in query_chars)):
             selected.append(doc)
 
     return "\n".join(selected[:3]) if selected else ""
