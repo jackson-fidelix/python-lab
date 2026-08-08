@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <title>Resultado do formulário</title>
+</head>
+<body>
+  <header class="header">
+    <div class="header__text">
+      <h1>Obrigado, {{ name }}!</h1>
+      <p>Recebemos seus dados e entraremos em contato em breve.</p>
+    </div>
+  </header>
+  <main>
+    <section class="result">
+      <h2>Dados recebidos</h2>
+      <p><strong>Nome:</strong> {{ name }}</p>
+      <p><strong>E-mail:</strong> {{ email }}</p>
+      <p><strong>Endereço:</strong> {{ address }}</p>
+      <p><strong>Data:</strong> {{ date }}</p>
+      <p>Obrigado por enviar suas informações. Se quiser enviar outro formulário, <a href="{{ url_for('form') }}">clique aqui</a>.</p>
+    </section>
+  </main>
+  <footer></footer>
+</body>
+</html>
