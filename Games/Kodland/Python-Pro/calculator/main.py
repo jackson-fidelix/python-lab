@@ -2,7 +2,7 @@
 from flask import Flask, render_template, request
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='.', static_url_path='/static')
 
 def result_calculate(size, lights, device):
     """Calcula o consumo estimado com base na área, número de luminárias e aparelhos.
