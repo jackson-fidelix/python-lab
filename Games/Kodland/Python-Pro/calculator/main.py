@@ -64,6 +64,12 @@ def submit_form():
     address = request.form.get('address', '')
     date = request.form.get('date', '')
 
+    with open('form.txt', 'a', encoding='utf-8') as f:
+        f.write(name + '\n')
+        f.write(email + '\n')
+        f.write(address + '\n')
+        f.write(date + '\n')
+
     return render_template(
         'form_result.html',
         name=name,
